@@ -18,10 +18,6 @@ using Xamarin.Forms;
 namespace HeyMe.Droid
 {
 
-    public static class ComponentIds
-    {
-        public const int EditorId = 11000;
-    }
 
     public class MyEditorRenderer : EditorRenderer
     {
@@ -32,13 +28,6 @@ namespace HeyMe.Droid
         protected override void OnElementChanged(ElementChangedEventArgs<Editor> e)
         {
             MainActivity.Instance.RegisterView(e.NewElement.Id, Control);
-
-            //e.NewElement.ClassId
-            //var inputMethodManager = this.Control.Context.GetSystemService(Context.InputMethodService) as InputMethodManager;
-            //inputMethodManager.ShowSoftInput(this.Control, ShowFlags.Forced);
-            //inputMethodManager.ToggleSoftInput(ShowFlags.Forced, HideSoftInputFlags.ImplicitOnly);
-
-            //this.Id = ComponentIds.EditorId; 
             base.OnElementChanged(e); 
         }
     }

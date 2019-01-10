@@ -34,19 +34,17 @@ namespace HeyMe.Droid
             global::Xamarin.Forms.Forms.Init(this, savedInstanceState);
             LoadApplication(new App());
         }
-
-        static Dictionary<Guid, View> _registeredViews = new Dictionary<Guid, View>();
-
-        public void RegisterView(Guid controlId, View view)
-        {
-            _registeredViews[controlId] = view;
-        }
-
         static void Trace(string message)
         {
             Android.Util.Log.Info("EricTrace", message);
         }
 
+        Dictionary<Guid, View> _registeredViews = new Dictionary<Guid, View>();
+
+        public void RegisterView(Guid controlId, View view)
+        {
+            _registeredViews[controlId] = view;
+        }
 
         public void ShowKeyboard(Guid controlId)
         {

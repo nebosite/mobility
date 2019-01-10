@@ -8,6 +8,7 @@ namespace HeyMe
     public partial class App : Application
     {
         AppModel _theModel;
+        
         public App()
         {
             InitializeComponent();
@@ -30,7 +31,7 @@ namespace HeyMe
 
         protected override void OnResume()
         {
-            // Handle when your app resumes
+            ((MainPage)MainPage).Resume();
         }
     }
 }

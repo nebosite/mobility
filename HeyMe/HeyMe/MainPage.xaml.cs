@@ -11,38 +11,39 @@ namespace HeyMe
     public partial class MainPage : ContentPage
     {
         AppModel _appModel;
+        IDeviceInteraction _interactor;
         public MainPage(AppModel model)
         {
             InitializeComponent();
             _appModel = model;
+            _appModel.OnSendComplete += () =>
+            {
+                _interactor.HideKeyboard(EmailBodyEditor.Id);
+                _interactor.MinimizeMe();
+            };
 
-
+            _interactor = DependencyService.Get<IDeviceInteraction>();
         }
 
         protected override void OnAppearing()
         {
             base.OnAppearing();
-            var interactor = DependencyService.Get<IDeviceInteraction>();
             Task.Run(async () =>
             {
                 await Task.Delay(100);
                 EmailBodyEditor.Focus();
-                interactor.ShowKeyboard(EmailBodyEditor.Id);
+                _interactor.ShowKeyboard(EmailBodyEditor.Id);
             });
         }
 
-        IDeviceInteraction _mailSender;
+        internal void Resume()
+        {
+            _interactor.ShowKeyboard(EmailBodyEditor.Id);
+        }
+
         private void SendButtonClicked(object sender, EventArgs e)
         {
-            if(_mailSender == null)
-            {
-
-            }
             _appModel.Send();
-            var interactor = DependencyService.Get<IDeviceInteraction>();
-
-            interactor.HideKeyboard(EmailBodyEditor.Id);
-            interactor.MinimizeMe();
         }
     }
 }

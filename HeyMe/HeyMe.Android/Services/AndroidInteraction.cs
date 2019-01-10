@@ -31,5 +31,9 @@ namespace HeyMe.Droid.Services
             MainActivity.Instance.HideKeyboard(controlId);
         }
 
+        public void RunOnMainThread(Action runMe)
+        {
+            MainActivity.Instance.RunOnUiThread(runMe);
+        }
     }
 }

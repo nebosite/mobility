@@ -9,5 +9,6 @@ namespace HeyMe.Services
         void MinimizeMe();
         void ShowKeyboard(Guid controlId);
         void HideKeyboard(Guid controlId);
+        void RunOnMainThread(Action runMe);
     }
 }

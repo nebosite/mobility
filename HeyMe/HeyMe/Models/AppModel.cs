@@ -4,16 +4,53 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Text;
+using System.Timers;
 using Xamarin.Forms;
 
 namespace HeyMe
 {
     public class AppModel: INotifyPropertyChanged
     {
+        public event Action OnSendComplete;
+
         public string[] EmailChoices { get; private set; }
 
         public string SelectedEmail { get; set; }
-        public string EmailText { get; set; }
+
+        private int _nonInputTime = 0;
+        public int NonInputTime
+        {
+            get => _nonInputTime;
+            set
+            {
+                _nonInputTime = value;
+                RaisePropertyChanged(nameof(NonInputTime));
+                RaisePropertyChanged(nameof(ProgressValue));
+            }
+        }
+
+        public int NonInputLimit { get; set; } = 50;
+
+        public double ProgressValue =>(double) NonInputTime / NonInputLimit;
+
+        string _emailText;
+
+        private IMailSender _mailSender;
+        private IDeviceInteraction _interactor;
+
+        public string EmailText
+        {
+            get => _emailText;
+            set
+            {
+                _emailText = value;
+                Debug.WriteLine("Text changed");
+                NonInputTime = 0;
+                RaisePropertyChanged(nameof(EmailText));
+            }
+        }
+
+        Timer _inputTimer;
 
         public AppModel()
         {
@@ -24,7 +61,23 @@ namespace HeyMe
                 "evarmint22@gmail.com;eric@thejcrew.net"
             };
 
+            _mailSender = DependencyService.Get<IMailSender>();
+            _interactor = DependencyService.Get<IDeviceInteraction>();
+
             SelectedEmail = EmailChoices[0];
+            _inputTimer = new Timer(100);
+            _inputTimer.Elapsed += _inputTimer_Elapsed;
+
+            _inputTimer.Start();
+        }
+
+        private void _inputTimer_Elapsed(object sender, ElapsedEventArgs e)
+        {
+            if (!string.IsNullOrEmpty(EmailText))
+            {
+                NonInputTime++;
+                if (NonInputTime == NonInputLimit) Send();
+            }
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
@@ -34,12 +87,13 @@ namespace HeyMe
         }
         internal void Send()
         {
-            var paragraphSpot = EmailText.IndexOf("paragraph");
+            var sendText = EmailText;
+            var paragraphSpot = sendText.IndexOf("paragraph");
             if(paragraphSpot > 0)
             {
-                EmailText = EmailText.Replace("paragraph", "\n");
+                sendText = sendText.Replace("paragraph", "\n");
             }
-            var parts = EmailText.Split(new char[] { '\n', '\r' }, 2);
+            var parts = sendText.Split(new char[] { '\n', '\r' }, 2);
             var body = "";
             var subject = parts[0];
             if(parts[0].Length > 100)
@@ -51,9 +105,15 @@ namespace HeyMe
             {
                 body += parts[1];
             }
-            DependencyService.Get<IMailSender>().SendMail(SelectedEmail.Split(';'), "HEY ME:" + subject, body, null);
-            EmailText = "";
-            RaisePropertyChanged(nameof(EmailText));
+            _mailSender.SendMail(SelectedEmail.Split(';'), subject, body, null);
+
+            _interactor.RunOnMainThread(() =>
+            {
+                EmailText = "";
+                RaisePropertyChanged(nameof(EmailText));
+                OnSendComplete?.Invoke();
+            });
+           
         }
     }
 }

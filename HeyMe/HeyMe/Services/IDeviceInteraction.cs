@@ -6,6 +6,8 @@ namespace HeyMe.Services
 {
     public interface IDeviceInteraction
     {
-        void MinimizedMe();
+        void MinimizeMe();
+        void ShowKeyboard(Guid controlId);
+        void HideKeyboard(Guid controlId);
     }
 }

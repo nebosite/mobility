@@ -1,36 +1,52 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Net.Http;
 using System.Text;
+using Newtonsoft.Json;
 using Plugin.Messaging;
 
 namespace HeyMe.Shared
 {
     public static class MailHelper
     {
+        static HttpClient _client = new HttpClient();
+
+        public class EmailMessage
+        {
+            public string To { get; set; }
+            public string From { get; set; }
+            public string FromName { get; set; }
+            public string Subject { get; set; }
+            public string Body { get; set; }
+            public string HtmlBody { get; set; }
+        }
+
+        const string _sendMailApi = "https://niftiprotoservices.azurewebsites.net/api/SendMail?code=jFtAugXVQdKYa3vEwNMUkvCz/4ZWlIowIqplUIfiJ1KJ700bBcORAg==";
+
         public static void SendMail(string[] addresses, string subject, string body, string htmlBody)
         {
-            if (!CrossMessaging.IsSupported)
+            foreach(var address in addresses)
             {
-                Debug.WriteLine("Messaging is not supported");
-            }
+                var message = new EmailMessage
+                {
+                    To = address,
+                    From = "heyme@noreply.org",
+                    FromName = "HEY ME",
+                    Subject = subject,
+                    Body = (body == null ? "" : body) + "\r\n\r\nSent from Hey Me",
+                    HtmlBody = (htmlBody == null ? "" : htmlBody) + "<p>Sent from Hey Me</p>"
+                };
 
-            var emailTask = CrossMessaging.Current.EmailMessenger;
-            if (emailTask.CanSendEmail)
-            {
-                var email = new EmailMessageBuilder()
-                  .To(addresses)
-                  .Subject(subject);
-                
+                var content = new StringContent(JsonConvert.SerializeObject(message), Encoding.UTF8, "application/json");
 
-                if (body != null) email = email.Body(body);
-                if (htmlBody != null) email = email.BodyAsHtml(htmlBody);
+                var response = _client.PostAsync(_sendMailApi, content).Result;
 
-                emailTask.SendEmail(email.Build());
-            }
-            else
-            {
-                Debug.WriteLine("Can't send an email on this device.");
+                if(!response.IsSuccessStatusCode)
+                {
+                    var responseString = response.Content.ReadAsStringAsync().Result;
+                    Debug.WriteLine("Web request error: " + responseString);
+                }
             }
         }
     }

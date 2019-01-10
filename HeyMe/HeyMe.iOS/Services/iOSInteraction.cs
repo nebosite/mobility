@@ -12,7 +12,12 @@ namespace HeyMe.iOS.Services
 {
     public class iOSInteraction : IDeviceInteraction
     {
-        public void MinimizedMe()
+        public void MinimizeMe()
+        {
+            throw new NotImplementedException();
+        }
+
+        public void ShowKeyboard(Guid controlId)
         {
             throw new NotImplementedException();
         }

@@ -15,15 +15,23 @@ namespace HeyMe
         {
             InitializeComponent();
             _appModel = model;
+
+
         }
 
         protected override void OnAppearing()
         {
             base.OnAppearing();
-            EmailBodyEditor.Focus();
+            var interactor = DependencyService.Get<IDeviceInteraction>();
+            Task.Run(async () =>
+            {
+                await Task.Delay(100);
+                EmailBodyEditor.Focus();
+                interactor.ShowKeyboard(EmailBodyEditor.Id);
+            });
         }
 
-        IMailSender _mailSender;
+        IDeviceInteraction _mailSender;
         private void SendButtonClicked(object sender, EventArgs e)
         {
             if(_mailSender == null)
@@ -31,7 +39,10 @@ namespace HeyMe
 
             }
             _appModel.Send();
-            EmailBodyEditor.Focus();
+            var interactor = DependencyService.Get<IDeviceInteraction>();
+
+            interactor.HideKeyboard(EmailBodyEditor.Id);
+            interactor.MinimizeMe();
         }
     }
 }

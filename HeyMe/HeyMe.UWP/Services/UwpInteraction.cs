@@ -12,9 +12,14 @@ namespace HeyMe.UWP.Services
 {
     public class UWPInteraction : IDeviceInteraction
     {
-        public void MinimizedMe()
+        public void MinimizeMe()
         {
             Debug.WriteLine("Can't minimize a uwp app");
+        }
+
+        public void ShowKeyboard(Guid controlId)
+        {
+
         }
     }
 }

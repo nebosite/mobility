@@ -8,7 +8,12 @@ namespace HeyMe
     public partial class App : Application
     {
         AppModel _theModel;
-        
+
+        //------------------------------------------------------------------------------
+        /// <summary>
+        /// ctor
+        /// </summary>
+        //------------------------------------------------------------------------------
         public App()
         {
             InitializeComponent();
@@ -19,16 +24,31 @@ namespace HeyMe
             this.BindingContext = _theModel;
         }
 
+        //------------------------------------------------------------------------------
+        /// <summary>
+        /// 
+        /// </summary>
+        //------------------------------------------------------------------------------
         protected override void OnStart()
         {
             // Handle when your app starts
         }
 
+        //------------------------------------------------------------------------------
+        /// <summary>
+        /// 
+        /// </summary>
+        //------------------------------------------------------------------------------
         protected override void OnSleep()
         {
             // Handle when your app sleeps
         }
 
+        //------------------------------------------------------------------------------
+        /// <summary>
+        /// 
+        /// </summary>
+        //------------------------------------------------------------------------------
         protected override void OnResume()
         {
             ((MainPage)MainPage).Resume();

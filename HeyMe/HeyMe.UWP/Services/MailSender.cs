@@ -8,6 +8,11 @@ namespace HeyMe.UWP.Services
 {
     public class MailSender : IMailSender
     {
+        //------------------------------------------------------------------------------
+        /// <summary>
+        /// 
+        /// </summary>
+        //------------------------------------------------------------------------------
         public void SendMail(string[] addresses, string subject, string body, string htmlBody)
         {
             MailHelper.SendMail(addresses, subject, body, htmlBody);

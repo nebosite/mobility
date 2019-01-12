@@ -11,10 +11,19 @@ namespace HeyMe
 {
     public class AppModel: INotifyPropertyChanged
     {
+        /// <summary>
+        /// Event to notify send completion
+        /// </summary>
         public event Action OnSendComplete;
 
+        /// <summary>
+        /// Emails we can send to
+        /// </summary>
         public string[] EmailChoices { get; private set; }
 
+        /// <summary>
+        /// Selected Email Address
+        /// </summary>
         private string _selectedEmail;
         public string SelectedEmail
         {
@@ -27,6 +36,9 @@ namespace HeyMe
             }
         }
 
+        /// <summary>
+        /// The current ticks that have passed by without input
+        /// </summary>
         private int _nonInputTime = 0;
         public int NonInputTime
         {
@@ -39,20 +51,21 @@ namespace HeyMe
             }
         }
 
+        /// <summary>
+        /// Max number of ticks to wait without input before sending the current message
+        /// </summary>
         public int NonInputLimit { get; set; } = 70;
 
+        /// <summary>
+        /// Conversion of noninput time into a 0.0 - 1.0 progress value
+        /// </summary>
         public double ProgressValue =>(double) NonInputTime / NonInputLimit;
 
-        internal void RecievedTouch(TouchInfo touchInfo)
-        {
-            NonInputTime = 0;
-        }
 
+        /// <summary>
+        /// Email text
+        /// </summary>
         string _emailText;
-
-        private IMailSender _mailSender;
-        private IDeviceInteraction _interactor;
-
         public string EmailText
         {
             get => _emailText;
@@ -65,8 +78,15 @@ namespace HeyMe
             }
         }
 
-        Timer _inputTimer;
+        private IMailSender _mailSender;
+        private IDeviceInteraction _interactor;
+        private Timer _inputTimer;
 
+        //------------------------------------------------------------------------------
+        /// <summary>
+        /// ctor
+        /// </summary>
+        //------------------------------------------------------------------------------
         public AppModel()
         {
             EmailChoices = new string[]
@@ -86,12 +106,34 @@ namespace HeyMe
             _inputTimer.Start();
         }
 
+
+        //------------------------------------------------------------------------------
+        /// <summary>
+        /// Called by the system when a touch was detected
+        /// </summary>
+        //------------------------------------------------------------------------------
+        internal void RecievedTouch(TouchInfo touchInfo)
+        {
+            NonInputTime = 0;
+        }
+
+
+        //------------------------------------------------------------------------------
+        /// <summary>
+        /// Add voice recognition text to this email
+        /// </summary>
+        //------------------------------------------------------------------------------
         internal void RecieveSpeechText(string args)
         {
             EmailText += args + "\r\n";
         }
 
 
+        //------------------------------------------------------------------------------
+        /// <summary>
+        /// Input timer handler
+        /// </summary>
+        //------------------------------------------------------------------------------
         private void _inputTimer_Elapsed(object sender, ElapsedEventArgs e)
         {
             if (!string.IsNullOrEmpty(EmailText))
@@ -101,12 +143,27 @@ namespace HeyMe
             }
         }
 
+        #region INotifyPropertyChanged Implementation
         public event PropertyChangedEventHandler PropertyChanged;
+
+        //------------------------------------------------------------------------------
+        /// <summary>
+        /// Called by the system when a touch was detected
+        /// </summary>
+        //------------------------------------------------------------------------------
+
         void RaisePropertyChanged(string propertyName)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
+        #endregion
+
+        //------------------------------------------------------------------------------
+        /// <summary>
+        /// Send the message we have queued up
+        /// </summary>
+        //------------------------------------------------------------------------------
         internal void Send()
         {
             var sendText = EmailText;

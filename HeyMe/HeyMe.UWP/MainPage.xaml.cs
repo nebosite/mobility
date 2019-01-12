@@ -19,6 +19,11 @@ namespace HeyMe.UWP
     public sealed partial class MainPage
     {
         public static MainPage Instance { get; private set; }
+        //------------------------------------------------------------------------------
+        /// <summary>
+        /// 
+        /// </summary>
+        //------------------------------------------------------------------------------
         public MainPage()
         {
             Instance = this;
@@ -27,6 +32,11 @@ namespace HeyMe.UWP
             LoadApplication(new HeyMe.App());
         }
 
+        //------------------------------------------------------------------------------
+        /// <summary>
+        /// 
+        /// </summary>
+        //------------------------------------------------------------------------------
         public void RunOnUiThread(Action runMe)
         {
             Dispatcher.RunAsync(CoreDispatcherPriority.Normal, async () =>

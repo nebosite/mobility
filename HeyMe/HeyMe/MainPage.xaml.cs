@@ -8,10 +8,21 @@ using Xamarin.Forms;
 
 namespace HeyMe
 {
+    //------------------------------------------------------------------------------
+    /// <summary>
+    /// MainPage
+    /// </summary>
+    //------------------------------------------------------------------------------
     public partial class MainPage : ContentPage
     {
         AppModel _appModel;
         IDeviceInteraction _interactor;
+
+        //------------------------------------------------------------------------------
+        /// <summary>
+        /// ctor
+        /// </summary>
+        //------------------------------------------------------------------------------
         public MainPage(AppModel model)
         {
             InitializeComponent();
@@ -38,6 +49,11 @@ namespace HeyMe
 
         }
 
+        //------------------------------------------------------------------------------
+        /// <summary>
+        /// OnAppearing
+        /// </summary>
+        //------------------------------------------------------------------------------
         protected override void OnAppearing()
         {
             base.OnAppearing();
@@ -52,6 +68,11 @@ namespace HeyMe
             });
         }
 
+        //------------------------------------------------------------------------------
+        /// <summary>
+        /// Resume
+        /// </summary>
+        //------------------------------------------------------------------------------
         internal void Resume()
         {
             if(!_interactor.StartVoiceRecognition())
@@ -60,6 +81,11 @@ namespace HeyMe
             }
         }
 
+        //------------------------------------------------------------------------------
+        /// <summary>
+        /// SendButtonClicked
+        /// </summary>
+        //------------------------------------------------------------------------------
         private void SendButtonClicked(object sender, EventArgs e)
         {
             _appModel.Send();

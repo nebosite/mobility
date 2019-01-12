@@ -1,0 +1,18 @@
+﻿TODO NOW
+	[ ] Cancel button
+	[ ] Stop Timer button
+
+
+TODO NEW
+	[ ] Edit addresses
+	[ ] Icon
+
+TODO SOON
+
+
+DO LATER
+
+
+
+
+DONE =====================================================

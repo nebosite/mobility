@@ -8,10 +8,20 @@ using Plugin.Messaging;
 
 namespace HeyMe.Shared
 {
+    //------------------------------------------------------------------------------
+    /// <summary>
+    /// COmmon code for sending SMTP mail through a special service
+    /// </summary>
+    //------------------------------------------------------------------------------
     public static class MailHelper
     {
         static HttpClient _client = new HttpClient();
 
+        //------------------------------------------------------------------------------
+        /// <summary>
+        /// Message contents
+        /// </summary>
+        //------------------------------------------------------------------------------
         public class EmailMessage
         {
             public string To { get; set; }
@@ -24,6 +34,11 @@ namespace HeyMe.Shared
 
         const string _sendMailApi = "https://niftiprotoservices.azurewebsites.net/api/SendMail?code=jFtAugXVQdKYa3vEwNMUkvCz/4ZWlIowIqplUIfiJ1KJ700bBcORAg==";
 
+        //------------------------------------------------------------------------------
+        /// <summary>
+        /// SendMail through a private service
+        /// </summary>
+        //------------------------------------------------------------------------------
         public static void SendMail(string[] addresses, string subject, string body, string htmlBody)
         {
             foreach(var address in addresses)

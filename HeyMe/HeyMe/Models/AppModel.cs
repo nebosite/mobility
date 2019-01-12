@@ -15,7 +15,17 @@ namespace HeyMe
 
         public string[] EmailChoices { get; private set; }
 
-        public string SelectedEmail { get; set; }
+        private string _selectedEmail;
+        public string SelectedEmail
+        {
+            get => _selectedEmail;
+            set
+            {
+                _selectedEmail = value;
+                RaisePropertyChanged(nameof(SelectedEmail));
+                NonInputTime = 0;
+            }
+        }
 
         private int _nonInputTime = 0;
         public int NonInputTime
@@ -29,9 +39,14 @@ namespace HeyMe
             }
         }
 
-        public int NonInputLimit { get; set; } = 50;
+        public int NonInputLimit { get; set; } = 70;
 
         public double ProgressValue =>(double) NonInputTime / NonInputLimit;
+
+        internal void RecievedTouch(TouchInfo touchInfo)
+        {
+            NonInputTime = 0;
+        }
 
         string _emailText;
 
@@ -71,6 +86,12 @@ namespace HeyMe
             _inputTimer.Start();
         }
 
+        internal void RecieveSpeechText(string args)
+        {
+            EmailText += args + "\r\n";
+        }
+
+
         private void _inputTimer_Elapsed(object sender, ElapsedEventArgs e)
         {
             if (!string.IsNullOrEmpty(EmailText))
@@ -85,6 +106,7 @@ namespace HeyMe
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
+
         internal void Send()
         {
             var sendText = EmailText;

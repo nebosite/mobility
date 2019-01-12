@@ -35,5 +35,11 @@ namespace HeyMe.Droid.Services
         {
             MainActivity.Instance.RunOnUiThread(runMe);
         }
+
+        public bool StartVoiceRecognition()
+        {
+            return MainActivity.Instance.StartVoiceRecognition();
+        }
+
     }
 }

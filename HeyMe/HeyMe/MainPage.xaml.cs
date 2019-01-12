@@ -23,6 +23,19 @@ namespace HeyMe
             };
 
             _interactor = DependencyService.Get<IDeviceInteraction>();
+
+            MessagingCenter.Subscribe<IMessageSender, string>(this, "STT", (sender, args) =>
+            {
+                _appModel.RecieveSpeechText(args);
+                EmailBodyEditor.Focus();
+                _interactor.ShowKeyboard(EmailBodyEditor.Id);
+            });
+
+            MessagingCenter.Subscribe<IMessageSender, TouchInfo>(this, "Touched", (sender, touchInfo) =>
+            {
+                _appModel.RecievedTouch(touchInfo);
+            });
+
         }
 
         protected override void OnAppearing()
@@ -31,14 +44,20 @@ namespace HeyMe
             Task.Run(async () =>
             {
                 await Task.Delay(100);
-                EmailBodyEditor.Focus();
-                _interactor.ShowKeyboard(EmailBodyEditor.Id);
+                if (!_interactor.StartVoiceRecognition())
+                {
+                    EmailBodyEditor.Focus();
+                    _interactor.ShowKeyboard(EmailBodyEditor.Id);
+                }
             });
         }
 
         internal void Resume()
         {
-            _interactor.ShowKeyboard(EmailBodyEditor.Id);
+            if(!_interactor.StartVoiceRecognition())
+            {
+                _interactor.ShowKeyboard(EmailBodyEditor.Id);
+            }
         }
 
         private void SendButtonClicked(object sender, EventArgs e)

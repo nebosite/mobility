@@ -36,5 +36,10 @@ namespace HeyMe.iOS.Services
             //    // Code to run here
             //});
         }
+
+        public bool StartVoiceRecognition()
+        {
+            return false;
+        }
     }
 }

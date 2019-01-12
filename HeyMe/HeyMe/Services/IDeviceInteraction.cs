@@ -10,5 +10,10 @@ namespace HeyMe.Services
         void ShowKeyboard(Guid controlId);
         void HideKeyboard(Guid controlId);
         void RunOnMainThread(Action runMe);
+
+        // https://medium.com/@dev.aritradas/xamarin-forms-speech-recognition-c16f07cdf164
+        bool StartVoiceRecognition();
     }
+
+ 
 }

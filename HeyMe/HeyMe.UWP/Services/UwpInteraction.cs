@@ -29,5 +29,10 @@ namespace HeyMe.UWP.Services
         {
             MainPage.Instance.RunOnUiThread(runMe);
         }
+
+        public bool StartVoiceRecognition()
+        {
+            return false;
+        }
     }
 }

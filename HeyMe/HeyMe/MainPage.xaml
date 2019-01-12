@@ -4,7 +4,7 @@
              xmlns:local="clr-namespace:HeyMe"
              x:Class="HeyMe.MainPage">
 
-    <Grid>
+    <Grid >
         <Grid.RowDefinitions>
             <RowDefinition Height="40"/>
             <RowDefinition Height="60"/>

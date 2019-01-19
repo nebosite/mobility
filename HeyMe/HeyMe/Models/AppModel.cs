@@ -76,6 +76,20 @@ namespace HeyMe
             }
         }
 
+        public Color AlertBackgroundColor => Color.Pink;
+        public string AlertText =>SendError == null ? "Unknown error" : "Send Error: " + SendError.Message;
+        public bool AlertVisibility => SendError != null;
+        private Exception _sendError;
+        public Exception SendError
+        { get => _sendError;
+                set
+            {
+                _sendError = value;
+                RaisePropertyChanged(nameof(SendError));
+                RaisePropertyChanged(nameof(AlertText));
+                RaisePropertyChanged(nameof(AlertVisibility));
+            }
+        }
         private IMailSender _mailSender;
         private IDeviceInteraction _interactor;
         private Timer _inputTimer;
@@ -194,32 +208,40 @@ namespace HeyMe
         //------------------------------------------------------------------------------
         internal void Send()
         {
-            var sendText = EmailText;
-            var paragraphSpot = sendText.IndexOf("paragraph");
-            if(paragraphSpot > 0)
+            try
             {
-                sendText = sendText.Replace("paragraph", "\n");
-            }
-            var parts = sendText.Split(new char[] { '\n', '\r' }, 2);
-            var body = "";
-            var subject = parts[0];
-            if(parts[0].Length > 100)
-            {
-                subject = parts[0].Substring(0, 100);
-                body = parts[0] + "\r\n";
-            }
-            if(parts.Length > 1)
-            {
-                body += parts[1];
-            }
-            _mailSender.SendMail(SelectedEmail.Split(';'), subject, body, null);
+                var sendText = EmailText;
+                var paragraphSpot = sendText.IndexOf("paragraph");
+                if(paragraphSpot > 0)
+                {
+                    sendText = sendText.Replace("paragraph", "\n");
+                }
+                var parts = sendText.Split(new char[] { '\n', '\r' }, 2);
+                var body = "";
+                var subject = parts[0];
+                if(parts[0].Length > 100)
+                {
+                    subject = parts[0].Substring(0, 100);
+                    body = parts[0] + "\r\n";
+                }
+                if(parts.Length > 1)
+                {
+                    body += parts[1];
+                }
+                _mailSender.SendMail(SelectedEmail.Split(';'), subject, body, null);
 
-            _interactor.RunOnMainThread(() =>
+                _interactor.RunOnMainThread(() =>
+                {
+                    EmailText = "";
+                    RaisePropertyChanged(nameof(EmailText));
+                    OnSendComplete?.Invoke();
+                });
+
+            }
+            catch(Exception e)
             {
-                EmailText = "";
-                RaisePropertyChanged(nameof(EmailText));
-                OnSendComplete?.Invoke();
-            });
+                SendError = e;
+            }
            
         }
     }

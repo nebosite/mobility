@@ -111,5 +111,16 @@ namespace HeyMe
             _appModel.Cancel();
             _interactor.MinimizeMe();
         }
+
+        //------------------------------------------------------------------------------
+        /// <summary>
+        /// 
+        /// </summary>
+        //------------------------------------------------------------------------------
+        private void AlertOKClicked(object sender, EventArgs e)
+        {
+            _appModel.SendError = null;
+            _interactor.MinimizeMe();
+        }
     }
 }

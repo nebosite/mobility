@@ -34,6 +34,7 @@ namespace HeyMe.Shared
         }
 
         const string _sendMailApi = "https://niftiprotoservices.azurewebsites.net/api/SendMail?code=jFtAugXVQdKYa3vEwNMUkvCz/4ZWlIowIqplUIfiJ1KJ700bBcORAg==";
+      //const string _sendMailApi = "https://niftiprotoservices.azurewebsites.net/api/SendMail?code=jFtAugXVQdKYa3vEwNMUkvCz/4ZWlIowIqplUIfiJ1KJ700bBcORAg==";
 
         //------------------------------------------------------------------------------
         /// <summary>
@@ -57,12 +58,23 @@ namespace HeyMe.Shared
 
                 var content = new StringContent(JsonConvert.SerializeObject(message), Encoding.UTF8, "application/json");
 
-                var response = _client.PostAsync(_sendMailApi, content).Result;
-
-                if(!response.IsSuccessStatusCode)
+                try
                 {
-                    var responseString = response.Content.ReadAsStringAsync().Result;
-                    Debug.WriteLine("Web request error: " + responseString);
+                    var response = _client.PostAsync(_sendMailApi, content).Result;
+
+                    if (!response.IsSuccessStatusCode)
+                    {
+                        var responseString = response.Content.ReadAsStringAsync().Result;
+                        Debug.WriteLine("Web request error: " + responseString);
+                    }
+                }
+                catch(AggregateException ae)
+                {
+                    foreach(var err in ae.InnerExceptions )
+                    {
+                        Debug.WriteLine("ARRG: " + err.Message);
+                    }
+                    throw ae.InnerException;
                 }
                 Debug.WriteLine($"Finished sending to {address}");
             }
@@ -79,9 +91,16 @@ namespace HeyMe.Shared
             Debug.WriteLine("StartPing");
             _pingTask = Task.Run(async () =>
             {
-                var message = new EmailMessage { To = "ping"  };
-                var content = new StringContent(JsonConvert.SerializeObject(message), Encoding.UTF8, "application/json");
-                await _client.PostAsync(_sendMailApi, content);
+                try
+                {
+                    var message = new EmailMessage { To = "ping"  };
+                    var content = new StringContent(JsonConvert.SerializeObject(message), Encoding.UTF8, "application/json");
+                    await _client.PostAsync(_sendMailApi, content);
+                }
+                catch(Exception e)
+                {
+                    Debug.WriteLine("Ping Error: " + e.Message);
+                }
                 Debug.WriteLine("PingFinished");
             });
         }

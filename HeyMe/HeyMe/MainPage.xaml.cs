@@ -23,10 +23,10 @@ namespace HeyMe
         /// ctor
         /// </summary>
         //------------------------------------------------------------------------------
-        public MainPage(AppModel model)
+        public MainPage()
         {
             InitializeComponent();
-            _appModel = model;
+            _appModel = App.TheModel;
             _appModel.OnSendComplete += () =>
             {
                 _interactor.HideKeyboard(EmailBodyEditor.Id);
@@ -47,7 +47,15 @@ namespace HeyMe
                 _appModel.RecievedTouch(touchInfo);
             });
 
+            var timerTapRecognizer = new TapGestureRecognizer();
+            timerTapRecognizer.Tapped += (s, e) => {
+                _appModel.TimerTapped();
+            };
+
+            InputProgress.GestureRecognizers.Add(timerTapRecognizer);
         }
+
+        Task _appearingTask;
 
         //------------------------------------------------------------------------------
         /// <summary>
@@ -57,12 +65,13 @@ namespace HeyMe
         protected override void OnAppearing()
         {
             base.OnAppearing();
-            Task.Run(async () =>
+            _appearingTask = Task.Run(async () =>
             {
                 await Task.Delay(100);
+                _appModel.Start();
                 if (!_interactor.StartVoiceRecognition())
                 {
-                    EmailBodyEditor.Focus();
+                    //EmailBodyEditor.Focus();
                     _interactor.ShowKeyboard(EmailBodyEditor.Id);
                 }
             });
@@ -75,6 +84,7 @@ namespace HeyMe
         //------------------------------------------------------------------------------
         internal void Resume()
         {
+            _appModel.Start();
             if(!_interactor.StartVoiceRecognition())
             {
                 _interactor.ShowKeyboard(EmailBodyEditor.Id);
@@ -89,6 +99,17 @@ namespace HeyMe
         private void SendButtonClicked(object sender, EventArgs e)
         {
             _appModel.Send();
+        }
+
+        //------------------------------------------------------------------------------
+        /// <summary>
+        /// SendButtonClicked
+        /// </summary>
+        //------------------------------------------------------------------------------
+        private void CancelButtonClicked(object sender, EventArgs e)
+        {
+            _appModel.Cancel();
+            _interactor.MinimizeMe();
         }
     }
 }

@@ -27,7 +27,7 @@ namespace HeyMe.Droid
 
         protected override void OnElementChanged(ElementChangedEventArgs<Editor> e)
         {
-            MainActivity.Instance.RegisterView(e.NewElement.Id, Control);
+            MainActivity.Instance?.RegisterView(e.NewElement.Id, Control);
             base.OnElementChanged(e); 
         }
     }

@@ -1,6 +1,6 @@
 ﻿TODO NOW
-	[ ] Cancel button
-	[ ] Stop Timer button
+	[x] Cancel button
+	[x] Stop Timer button
 
 
 TODO NEW

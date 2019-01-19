@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Net.Http;
 using System.Text;
+using System.Threading.Tasks;
 using Newtonsoft.Json;
 using Plugin.Messaging;
 
@@ -43,14 +44,15 @@ namespace HeyMe.Shared
         {
             foreach(var address in addresses)
             {
+                Debug.WriteLine($"Sending to {address}");
                 var message = new EmailMessage
                 {
                     To = address,
                     From = "heyme@noreply.org",
                     FromName = "HEY ME",
                     Subject = subject,
-                    Body = (body == null ? "" : body) + "\r\n\r\nSent from Hey Me",
-                    HtmlBody = (htmlBody == null ? "" : htmlBody) + "<p>Sent from Hey Me</p>"
+                    Body = (body == null ? null : body + "\r\n\r\nSent from Hey Me"),
+                    HtmlBody = (htmlBody == null ? null : htmlBody + "<p>Sent from Hey Me</p>")
                 };
 
                 var content = new StringContent(JsonConvert.SerializeObject(message), Encoding.UTF8, "application/json");
@@ -62,7 +64,27 @@ namespace HeyMe.Shared
                     var responseString = response.Content.ReadAsStringAsync().Result;
                     Debug.WriteLine("Web request error: " + responseString);
                 }
+                Debug.WriteLine($"Finished sending to {address}");
             }
         }
+
+        static Task _pingTask;
+        //------------------------------------------------------------------------------
+        /// <summary>
+        /// Wake up the mail service so it is primed to respond quickly
+        /// </summary>
+        //------------------------------------------------------------------------------
+        public static void PingMailService()
+        {
+            Debug.WriteLine("StartPing");
+            _pingTask = Task.Run(async () =>
+            {
+                var message = new EmailMessage { To = "ping"  };
+                var content = new StringContent(JsonConvert.SerializeObject(message), Encoding.UTF8, "application/json");
+                await _client.PostAsync(_sendMailApi, content);
+                Debug.WriteLine("PingFinished");
+            });
+        }
+
     }
 }

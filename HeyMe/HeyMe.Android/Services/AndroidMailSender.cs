@@ -17,6 +17,11 @@ namespace HeyMe.Droid.Services
 {
     public class AndroidMailSender : IMailSender
     {
+        public void PingEmailService()
+        {
+            MailHelper.PingMailService();
+        }
+
         public void SendMail(string[] addresses, string subject, string body, string htmlBody)
         {
             MailHelper.SendMail(addresses, subject, body, htmlBody);

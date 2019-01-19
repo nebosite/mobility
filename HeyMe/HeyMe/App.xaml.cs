@@ -7,7 +7,7 @@ namespace HeyMe
 {
     public partial class App : Application
     {
-        AppModel _theModel;
+        public static AppModel TheModel;
 
         //------------------------------------------------------------------------------
         /// <summary>
@@ -18,10 +18,10 @@ namespace HeyMe
         {
             InitializeComponent();
 
-            _theModel = new AppModel();
-            MainPage = new MainPage(_theModel);
+            TheModel = new AppModel();
+            MainPage = new MainPage();
 
-            this.BindingContext = _theModel;
+            this.BindingContext = TheModel;
         }
 
         //------------------------------------------------------------------------------

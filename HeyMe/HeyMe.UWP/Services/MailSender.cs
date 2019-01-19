@@ -13,6 +13,16 @@ namespace HeyMe.UWP.Services
         /// 
         /// </summary>
         //------------------------------------------------------------------------------
+        public void PingEmailService()
+        {
+            MailHelper.PingMailService();
+        }
+
+        //------------------------------------------------------------------------------
+        /// <summary>
+        /// 
+        /// </summary>
+        //------------------------------------------------------------------------------
         public void SendMail(string[] addresses, string subject, string body, string htmlBody)
         {
             MailHelper.SendMail(addresses, subject, body, htmlBody);

@@ -54,13 +54,12 @@ namespace HeyMe
         /// <summary>
         /// Max number of ticks to wait without input before sending the current message
         /// </summary>
-        public int NonInputLimit { get; set; } = 70;
+        public int NonInputLimit { get; set; } = 40;
 
         /// <summary>
         /// Conversion of noninput time into a 0.0 - 1.0 progress value
         /// </summary>
         public double ProgressValue =>(double) NonInputTime / NonInputLimit;
-
 
         /// <summary>
         /// Email text
@@ -72,7 +71,6 @@ namespace HeyMe
             set
             {
                 _emailText = value;
-                Debug.WriteLine("Text changed");
                 NonInputTime = 0;
                 RaisePropertyChanged(nameof(EmailText));
             }
@@ -81,6 +79,7 @@ namespace HeyMe
         private IMailSender _mailSender;
         private IDeviceInteraction _interactor;
         private Timer _inputTimer;
+        private int _timerIncrement = 1;
 
         //------------------------------------------------------------------------------
         /// <summary>
@@ -106,6 +105,17 @@ namespace HeyMe
             _inputTimer.Start();
         }
 
+        //------------------------------------------------------------------------------
+        /// <summary>
+        /// Start a fresh email entry
+        /// </summary>
+        //------------------------------------------------------------------------------
+        internal void Start()
+        {
+            _mailSender.PingEmailService();
+            EmailText = "";
+            _timerIncrement = 1;
+        }
 
         //------------------------------------------------------------------------------
         /// <summary>
@@ -117,6 +127,25 @@ namespace HeyMe
             NonInputTime = 0;
         }
 
+        //------------------------------------------------------------------------------
+        /// <summary>
+        /// pause or unpause the timer
+        /// </summary>
+        //------------------------------------------------------------------------------
+        internal void TimerTapped()
+        {
+            _timerIncrement = (_timerIncrement == 0 ? 1 : 0);
+        }
+
+        //------------------------------------------------------------------------------
+        /// <summary>
+        /// Called by the system when a touch was detected
+        /// </summary>
+        //------------------------------------------------------------------------------
+        internal void Cancel()
+        {
+            EmailText = "";
+        }
 
         //------------------------------------------------------------------------------
         /// <summary>
@@ -128,7 +157,6 @@ namespace HeyMe
             EmailText += args + "\r\n";
         }
 
-
         //------------------------------------------------------------------------------
         /// <summary>
         /// Input timer handler
@@ -138,7 +166,7 @@ namespace HeyMe
         {
             if (!string.IsNullOrEmpty(EmailText))
             {
-                NonInputTime++;
+                NonInputTime += _timerIncrement;
                 if (NonInputTime == NonInputLimit) Send();
             }
         }

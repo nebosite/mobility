@@ -12,6 +12,11 @@ namespace HeyMe.iOS.Services
 {
     public class MailSender : IMailSender
     {
+        public void PingEmailService()
+        {
+            throw new NotImplementedException();
+        }
+
         public void SendMail(string[] addresses, string subject, string body, string htmlBody)
         {
             throw new NotImplementedException();

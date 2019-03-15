@@ -2,15 +2,21 @@
 	[x] Cancel button
 	[x] Stop Timer button
 
+    [ ] don't clear a filled out message that has not been sent
+    [ ] remember old messages
+	[ ] Icon
+	[ ] Edit addresses
+	[ ] Store in some global location
+
 
 TODO NEW
-	[ ] Edit addresses
-	[ ] Icon
 
 TODO SOON
 
 
 DO LATER
+	[ ] "paste it" is replaced with clipboard
+	[ ] Play with Google keep
 
 
 

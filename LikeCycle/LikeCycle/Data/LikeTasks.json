@@ -1,0 +1,156 @@
+﻿{
+	"Categories": [
+		{
+			"Name": "Positive Attitude",
+			"Description": "People enjoy being around someone who believes it them and in the goodness of life.",
+			"Challenges": [
+				{
+					"Name": "Reach out and pump up",
+					"Instructions": "Take a minute to go out of your way to express confidence in someone.  This can be an electronic communication, but in person is best.",
+					"Examples": [
+						"I'm glad you are in charge of that project.  I think your are the right person to get it done.",
+						"I'm looking forward to tasting those cookies you are baking.  They smell delicious!",
+						"That party you planned is on my mind.  See you there!"
+					]
+				}
+			]
+		},
+		{
+			"Name": "Engaged and Passionate",
+			"Description": "It feels great to know someone is putting there best into something, especially when collaborating.",
+			"Challenges": [
+				{
+					"Name": "Three Ideas",
+					"Instructions": "For one of your current collaborations, think of 2-3 things you would enjoy doing to help.",
+					"Examples": [
+						""
+					]
+				}
+			]
+		},
+		{
+			"Name": "Laugh at Yourself",
+			"Description": "It's comfortable and inviting to be around someone who can laugh at themselves.",
+			"Challenges": [
+				{
+					"Name": "Post Something Mildy Embarrassing",
+					"Instructions": "Very few people will enjoy seeing your vacation photos online... unless it's of you falling off the boat.",
+					"Examples": [
+						""
+					]
+				}
+			]
+		},
+		{
+			"Name": "Manage Insecurity and Second Guessing",
+			"Description": "",
+			"Challenges": [
+				{
+					"Name": "",
+					"Instructions": "",
+					"Examples": [
+						""
+					]
+				}
+			]
+		},
+		{
+			"Name": "Listen",
+			"Description": "",
+			"Challenges": [
+				{
+					"Name": "FORD",
+					"Instructions": "Family, Occupation, Recreation, Dreams",
+					"Examples": [
+						""
+					]
+				},
+				{
+					"Name": "Ask for advice (and take it!)",
+					"Instructions": "Family, Occupation, Recreation, Dreams",
+					"Examples": [
+						""
+					]
+				}
+			]
+		},
+		{
+			"Name": "Humility",
+			"Description": "",
+			"Challenges": [
+				{
+					"Name": "Hand out the trophy",
+					"Instructions": "",
+					"Examples": [
+						""
+					]
+				}
+			]
+		},
+		{
+			"Name": "Positive Feedback and Appreciation",
+			"Description": "",
+			"Challenges": [
+				{
+					"Name": "",
+					"Instructions": "",
+					"Examples": [
+						""
+					]
+				}
+			]
+		},
+		{
+			"Name": "Compliments",
+			"Description": "",
+			"Challenges": [
+				{
+					"Name": "",
+					"Instructions": "",
+					"Examples": [
+						""
+					]
+				}
+			]
+		},
+		{
+			"Name": "Just Tell Them",
+			"Description": "",
+			"Challenges": [
+				{
+					"Name": "I Like You",
+					"Instructions": "",
+					"Examples": [
+						""
+					]
+				}
+			]
+		},
+		{
+			"Name": "Find Excuses To Like",
+			"Description": "",
+			"Challenges": [
+				{
+					"Name": "",
+					"Instructions": "",
+					"Examples": [
+						""
+					]
+				}
+			]
+		},
+		{
+			"Name": "Highlight Similarities",
+			"Description": "",
+			"Challenges": [
+				{
+					"Name": "",
+					"Instructions": "",
+					"Examples": [
+						""
+					]
+				}
+			]
+		}
+	]
+}

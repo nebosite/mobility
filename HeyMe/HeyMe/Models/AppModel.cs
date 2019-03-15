@@ -19,7 +19,7 @@ namespace HeyMe
         /// <summary>
         /// Emails we can send to
         /// </summary>
-        public string[] EmailChoices { get; private set; }
+        public string[] EmailChoices => _settings.EmailChoices;
 
         /// <summary>
         /// Selected Email Address
@@ -54,7 +54,7 @@ namespace HeyMe
         /// <summary>
         /// Max number of ticks to wait without input before sending the current message
         /// </summary>
-        public int NonInputLimit { get; set; } = 40;
+        public int NonInputLimit { get; set; } = 50;
 
         /// <summary>
         /// Conversion of noninput time into a 0.0 - 1.0 progress value
@@ -94,6 +94,7 @@ namespace HeyMe
         private IDeviceInteraction _interactor;
         private Timer _inputTimer;
         private int _timerIncrement = 1;
+        private AppSettings _settings;
 
         //------------------------------------------------------------------------------
         /// <summary>
@@ -102,12 +103,7 @@ namespace HeyMe
         //------------------------------------------------------------------------------
         public AppModel()
         {
-            EmailChoices = new string[]
-            {
-                "ericjorg@thejcrew.net",
-                "evarmint22@gmail.com",
-                "evarmint22@gmail.com;eric@thejcrew.net"
-            };
+            _settings = AppSettings.Load("heyme_settings.json");
 
             _mailSender = DependencyService.Get<IMailSender>();
             _interactor = DependencyService.Get<IDeviceInteraction>();

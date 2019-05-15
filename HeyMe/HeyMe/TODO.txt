@@ -2,6 +2,12 @@
 	[x] Cancel button
 	[x] Stop Timer button
 
+	[ ] Fix Navigation:
+		[ ] Navigator looks at first child (should be a grid) and pulls children from that
+		[ ] Children should implement IMyNavigationItem
+			- OnNavigateTo, OnNavigateFrom, NavigationId, etc.   
+			- throw an error if they don't
+
     [ ] don't clear a filled out message that has not been sent
     [ ] remember old messages
 	[ ] Icon

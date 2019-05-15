@@ -1,0 +1,13 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<ContentView xmlns="http://xamarin.com/schemas/2014/forms" 
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="HeyMe.AlertView">
+  <ContentView.Content>
+        <Grid BackgroundColor="{Binding AlertBackgroundColor}">
+            <StackLayout Margin="20">
+                <Label Text="{Binding AlertText}" Margin="0,50,0,0" TextColor="Black" HeightRequest="200" />
+                <Button Text="OK" FontSize="30"  HeightRequest="100" WidthRequest="100" HorizontalOptions="Center" Clicked="AlertOKClicked" />
+            </StackLayout>
+        </Grid>
+    </ContentView.Content>
+</ContentView>

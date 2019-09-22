@@ -16,7 +16,9 @@
 
 
 TODO NEW
-
+	[ ] Make it a Sharing Target
+        https://stackoverflow.com/questions/51556376/setting-my-app-as-a-sharing-target-xamarin
+        https://forums.xamarin.com/discussion/89529/is-it-possible-and-how-to-receive-share-from-other-apps
 TODO SOON
 
 
